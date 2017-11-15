@@ -16,12 +16,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import edu.cnm.bootcamp.russell.helloworld.api.API;
+import edu.cnm.bootcamp.russell.helloworld.fragments.ImgurFragment;
 import edu.cnm.bootcamp.russell.helloworld.fragments.MainFragment;
 import edu.cnm.bootcamp.russell.helloworld.fragments.SettingsFragment;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    MainFragment.OnFragmentInteractionListener {
+                    MainFragment.OnFragmentInteractionListener,
+                    ImgurFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,8 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        API.init(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -92,11 +97,24 @@ public class NavigationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
         if (id == R.id.nav_hello) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction
                     = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, MainFragment.newInstance());
+            fragmentTransaction.replace(
+                    R.id.fragment_container,
+                    MainFragment.newInstance()
+            );
+            fragmentTransaction.commit();
+        }
+        else if (id == R.id.nav_imgur) {
+            FragmentTransaction fragmentTransaction
+                    = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(
+                    R.id.fragment_container,
+                    ImgurFragment.newInstance("", "")
+            );
             fragmentTransaction.commit();
         }
 
